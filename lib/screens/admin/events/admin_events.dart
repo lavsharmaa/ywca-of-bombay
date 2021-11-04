@@ -54,19 +54,19 @@ class _AdminEventsState extends State<AdminEvents> {
           .then((checkSnapshot) {
         if (checkSnapshot.size > 0) {
           print("already exists");
-          print("updating token");
+          //force override
           FirebaseFirestore.instance
-              .collection('mobileToken')
-              .doc(userID)
-              .update({'token': deviceToken})
-              .then((_) => print('Updated'))
-              .catchError((error) => print('Update failed: $error'));
+            .collection('mobileToken')
+            .doc(userID)
+            .set({'token': deviceToken});
+          print("updated");
         } else {
           // saving the value if it doesn't exists
           print("adding");
           FirebaseFirestore.instance
               .collection('mobileToken')
-              .add({'token': deviceToken, 'userID': userID});
+              .doc(userID)
+              .set({'token': deviceToken, 'userID': userID});
         }
       });
     });

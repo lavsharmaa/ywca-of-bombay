@@ -122,12 +122,19 @@ class _EventsState extends State<Events> {
           .then((checkSnapshot) {
         if (checkSnapshot.size > 0) {
           print("already exists");
+          //force override
+          FirebaseFirestore.instance
+            .collection('mobileToken')
+            .doc(userID)
+            .set({'token': deviceToken});
+          print("updated");
         } else {
           // saving the value if it doesn't exists
           print("adding");
           FirebaseFirestore.instance
               .collection('mobileToken')
-              .add({'token': deviceToken, 'userID': userID});
+              .doc(userID)
+              .set({'token': deviceToken, 'userID': userID});
         }
       });
     });
